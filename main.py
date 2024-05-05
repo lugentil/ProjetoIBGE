@@ -3,10 +3,15 @@ df = pd.read_excel('C:\\Users\\Lucas\\Desktop\\Projeto-IBGE\\Municipios.xls').sa
 df.columns = ['Cidade', 'Território', 'População']
 
 def programa():
-    print(df)
     menu()
-    resposta = int(input())
-    while (resposta >= 0):
+    for i in range(1,10):
+        try:
+            resposta = int(input())
+            break
+        except:
+            print(f'O valor informado é ínválido.\nPor favor escolher entre as opções válidas.')
+
+    while (resposta != 0):
         modulos(resposta)
 
     if ( resposta == 0):
@@ -40,6 +45,68 @@ def calcula_media_populacao_estado():
     Media = População / len(df)
     print(f'Média da População entre as 100 cidades é equivalente a {round(Media)} pessoas.')
 
+def buscar():
+    print(f'\nOpções de busca:')
+    print(f'\n1 - População > x')
+    print(f'\n2 - População < x')
+    print(f'\n3 - Território > x')
+    print(f'\n4 - Território < x')
+    print(f'\n5 - Nome')
+    for i in range(1,10):
+        try:
+            busca = int(input())
+            break
+        except:
+            print(f'O valor informado é ínválido.\nPor favor escolher entre as opções válidas.')
+    if busca == 1:
+        print(f'Por gentileza fornecer um número inteiro para buscar no dataset.')
+        x = int(input())
+        cidade_busca = df[df['População'] > x]['Cidade']
+        população_busca = df[df['População'] > x]['População']
+        territorio_busca = df[df['Território'] < x]['População']
+
+        print(f'Realizando busca...\nResultados:\n')
+        for i, j, k in zip(cidade_busca, população_busca, territorio_busca):
+            print(f'{i} Habitantes: {j} Território: {k} km²')
+            print('\n|------------------------------------------------------------------------------------------------------|\n')
+    elif busca == 2:
+        print(f'Por gentileza fornecer um número inteiro para buscar no dataset.')
+        x = int(input())
+        cidade_busca = df[df['População'] < x]['Cidade']
+        população_busca = df[df['População'] < x]['População']
+        territorio_busca = df[df['Território'] < x]['População']
+        print(f'Realizando busca...\nResultados:\n')
+        for i, j, k in zip(cidade_busca, população_busca, territorio_busca):
+            print(f'{i} Habitantes: {j} Território: {k} km²')
+            print('\n|------------------------------------------------------------------------------------------------------|\n')
+    elif busca == 3:
+        print(f'Por gentileza fornecer um número inteiro para buscar no dataset.')
+        x = int(input())
+        cidade_busca = df[df['Território'] > x]['Cidade']
+        população_busca = df[df['Território'] > x]['População']
+        territorio_busca = df[df['Território'] > x]['Território']
+        print(territorio_busca)
+        print(f'Realizando busca...\nResultados:\n')
+        for i, j, k in zip(cidade_busca, população_busca, territorio_busca):
+            print(f'{i} Habitantes: {j} Território: {k} km²')
+            print('\n|------------------------------------------------------------------------------------------------------|\n')
+    elif busca == 4:
+        print(f'Por gentileza fornecer um número inteiro para buscar no dataset.')
+        x = int(input())
+        cidade_busca = df[df['Território'] < x]['Cidade']
+        população_busca = df[df['Território'] < x]['População']
+        territorio_busca = df[df['Território'] < x]['Território']
+        print(f'Realizando busca...\nResultados:\n')
+        for i, j, k in zip(cidade_busca, população_busca, territorio_busca):
+            print(f'Cidade: {i} Habitantes: {j} Território: {k} km²')
+            print('\n|------------------------------------------------------------------------------------------------------|\n')
+    elif busca == 5:
+        print(f'Por gentileza fornecer o nome da cidade para buscar no dataset.')
+        nome = input()
+    elif busca == 0:
+        return
+
+
 def modulos(resposta):
     if int(resposta) == 1:
         calcula_territorio_mais_extenso()
@@ -53,6 +120,11 @@ def modulos(resposta):
             return programa()
     elif int(resposta) == 3:
         calcula_media_populacao_estado()
+        print(f'\nPara voltar ao menu pressione "0"')
+        if int(input()) == 0:
+            return programa()
+    elif int(resposta) == 4:
+        buscar()
         print(f'\nPara voltar ao menu pressione "0"')
         if int(input()) == 0:
             return programa()
