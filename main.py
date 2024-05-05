@@ -38,7 +38,7 @@ def calcula_populacao_mais_extenso():
     ID = df['Território'].idxmax()
     Cidade = df.loc[ID,'Cidade']
     População = df.loc[ID,'População']
-    print(f'{Cidade} possui a maior população entre todas as cidades do Estado de São Paulo com {População} km².')
+    print(f'{Cidade} possui a maior população entre todas as cidades do Estado de São Paulo com {População} habitantes.')
 
 def calcula_media_populacao_estado():
     População = df['População'].sum()
@@ -63,7 +63,7 @@ def buscar():
         x = int(input())
         cidade_busca = df[df['População'] > x]['Cidade']
         população_busca = df[df['População'] > x]['População']
-        territorio_busca = df[df['Território'] < x]['População']
+        territorio_busca = df[df['Território'] > x]['População']
 
         print(f'Realizando busca...\nResultados:\n')
         for i, j, k in zip(cidade_busca, população_busca, territorio_busca):
