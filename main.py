@@ -1,6 +1,9 @@
 import pandas as pd
+import time
 df = pd.read_excel('C:\\Users\\Lucas\\Desktop\\Projeto-IBGE\\Municipios.xls').sample(n=100)
 df.columns = ['Cidade', 'Território', 'População']
+pd.set_option('display.max_rows', None) # Opção inclusa para conseguir utilizar os módulos que imprimem diversas linhas. Sem esta opção o output fica limitado.
+pd.set_option('display.max_columns', None)  # Opção inclusa para conseguir utilizar os módulos que imprimem diversas linhas. Sem esta opção o output fica limitado.
 
 def programa():
     menu()
@@ -25,6 +28,7 @@ def menu():
     print(f'2 - Cidade mais populosa')
     print(f'3 - Média de pópulação do estado de SP')
     print(f'4 - Busca por Cidade')
+    print(f'5 - Exibir Cidades presentes no Dataset')
     print(f'0 - Para sair do Programa')
 
 def calcula_territorio_mais_extenso():
@@ -102,10 +106,27 @@ def buscar():
             print('\n|------------------------------------------------------------------------------------------------------|\n')
     elif busca == 5:
         print(f'Por gentileza fornecer o nome da cidade para buscar no dataset.')
-        nome = input()
+        nome = str(input())
+        cidade_busca = df[df['Cidade'] == nome]['Cidade']
+        população_busca = df[df['Cidade'] == nome]['População']
+        territorio_busca = df[df['Cidade'] == nome]['Território']
+        print(f'Realizando busca...\nResultados:\n')
+        if (cidade_busca.empty):
+            print(f'Não foi possivel encontrar a cidade solicitada.')
+        else:
+            for i, j, k in zip(cidade_busca, população_busca, territorio_busca):
+                print(f'Cidade: {i} Habitantes: {j} Território: {k} km²')
+                print('\n|------------------------------------------------------------------------------------------------------|\n')
+
     elif busca == 0:
         return
 
+def dados_dataset():
+    print('\n|------------------------------------------------------------------------------------------------------|\n')
+    print(f'Buscando dados do Dataset')
+    print('\n|------------------------------------------------------------------------------------------------------|\n')
+    time.sleep(2)
+    print(str(df.sort_index()))
 
 def modulos(resposta):
     if int(resposta) == 1:
@@ -125,6 +146,11 @@ def modulos(resposta):
             return programa()
     elif int(resposta) == 4:
         buscar()
+        print(f'\nPara voltar ao menu pressione "0"')
+        if int(input()) == 0:
+            return programa()
+    elif int(resposta) == 5:
+        dados_dataset()
         print(f'\nPara voltar ao menu pressione "0"')
         if int(input()) == 0:
             return programa()
